@@ -7,20 +7,30 @@ const pool = require("../../config/pool_conexoes");
 
 
 router.get("/select", async(req, res)=>{
-
         try{
-
-            const [resultado, esrtutura] = await pool.query("select * from usuario");
-
+            const [resultado, estrutura] = await pool.query("select * from usuario");
             console.log(resultado);
-
-            console.log(esrtutura);
-
+            console.log(estrutura);
         }catch(erro){
             console.log(erro);
         }
-
 } );
+
+
+router.get("/insert", async(req, res)=>{
+        try{
+            let dadosUsuario = {
+                nome_usuario: "Joca Silva",
+                user_usuario: "joca",
+                senha_usuario: "123456@Teste",
+                email_usuario: "joca@gmail.com"
+            };            
+            const [resultado] = await pool.query("insert into usuario set ?", [dadosUsuario]);            
+            console.log(resultado);    
+        }catch(erro){
+            console.log(erro);
+        }
+});
 
 
 
