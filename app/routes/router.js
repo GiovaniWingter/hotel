@@ -2,6 +2,27 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
+const pool = require("../../config/pool_conexoes");
+
+
+
+router.get("/select", async(req, res)=>{
+
+        try{
+
+            const [resultado, esrtutura] = await pool.query("select * from usuario");
+
+            console.log(resultado);
+
+            console.log(esrtutura);
+
+        }catch(erro){
+            console.log(erro);
+        }
+
+} );
+
+
 
 router.get("/", (req, res) => {
     res.render('pages/index');
