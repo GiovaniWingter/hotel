@@ -8,7 +8,7 @@ const {usuarioModel} = require("../models/usuarioModel");
 
 router.get("/select", async(req, res)=>{
 
-    let usuarios =  usuarioModel.findAll();
+    let usuarios = await usuarioModel.findAll();
 
     console.log(usuarios);
 
