@@ -2,20 +2,17 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
-const pool = require("../../config/pool_conexoes");
+const {usuarioModel} = require("../models/usuarioModel");
 
 
 
 router.get("/select", async(req, res)=>{
-        try{
-            const [resultado, estrutura] = await pool.query("select * from usuario");
-            console.log(resultado);
-            console.log(estrutura);
-        }catch(erro){
-            console.log(erro);
-        }
-} );
 
+    let usuarios =  usuarioModel.findAll();
+
+    console.log(usuarios);
+
+} );
 
 router.get("/insert", async(req, res)=>{
         try{
@@ -31,8 +28,6 @@ router.get("/insert", async(req, res)=>{
             console.log(erro);
         }
 });
-
-
 
 router.get("/", (req, res) => {
     res.render('pages/index');
