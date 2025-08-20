@@ -10,7 +10,7 @@ router.get("/", (req, res)=>{
 
 router.get("/adm-cliente", async (req, res)=>{
 
-    const [listaClientes] = await usuarioModel.findAll(); 
+    const listaClientes = await usuarioModel.findAll(); 
 
     res.render("pages/adm-cliente", {lista:listaClientes});
 })
