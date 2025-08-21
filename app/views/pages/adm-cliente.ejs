@@ -52,10 +52,9 @@
                 <th>Status</th>
                 <th>Ações</th>
             </tr>
-
             <% <!-- verifica se existe a lista -->
                 if(lista){
-
+                    let statusUsuario = ["inativo","ativo"]
                 <!-- Usa um forEach para iterar os itens da lista -->
                     lista.forEach((item)=>{
                         if(item.img_perfil_pasta == null){
@@ -70,14 +69,17 @@
                     <td><%= item.email_usuario %></td>
                     <td><%= item.cep_usuario %></td>
                     <td>
-                        <img alt="imagem de perfil" id="img-preview" src="<%= img %>"
-                            style="max-width:100px; max-height:100px;" />
+                        <img alt="imagem de perfil" id="img-preview"
+                         src="<%= img %>" style="max-width:50px; max-height:50px;" />
                     </td>
-                    <td><%= item.status_usuario %></td>
+                    <td><%= statusUsuario[item.status_usuario] %></td>
                     <td>
-                        <a href="/adm/adm-cliente-edit?id=<%=item.id_usuario%>" class="btn btn-warning"> Editar</a>
-                        <a href="/adm/adm-cliente-list?id=<%=item.id_usuario%>" class="btn btn-info"> Detalhes</a>
-                        <a href="/adm/adm-cliente-del?id=<%=item.id_usuario%>" class="btn btn-danger"> Excluir</a>
+                        <a href="/adm/adm-cliente-edit?id=<%=item.id_usuario%>" 
+                            class="btn btn-warning"> Editar</a>
+                        <a href="/adm/adm-cliente-list?id=<%=item.id_usuario%>" 
+                            class="btn btn-info"> Detalhes</a>
+                        <a href="/adm/adm-cliente-del?id=<%=item.id_usuario%>" 
+                            class="btn btn-danger"> Excluir</a>
                     </td>
                 </tr>
                 <% 
