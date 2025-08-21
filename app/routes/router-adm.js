@@ -3,6 +3,8 @@ const router = express.Router();
 
 const {usuarioModel} = require("../models/usuarioModel");
 
+const {usuarioModel} = require("../models/usuarioModel");
+
 
 router.get("/", (req, res)=>{
     res.render("pages/index-adm");
