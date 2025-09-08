@@ -6,6 +6,17 @@ const {usuarioModel} = require("../models/usuarioModel");
 
 
 
+router.get("/teste", async(req, res)=>{
+
+    let usuarios = await usuarioModel.findID('1');
+
+    console.log(usuarios);
+    usuarios = await usuarioModel.findByField({"user_usuario":"helvinha"});
+
+    console.log(usuarios);
+
+} );
+
 router.get("/select", async(req, res)=>{
 
     let usuarios = await usuarioModel.findAll();
