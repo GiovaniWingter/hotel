@@ -3,17 +3,21 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
 const {usuarioModel} = require("../models/usuarioModel");
+const { usuarioController } = require("../controllers/usuarioController");
 
 
 
 router.get("/teste", async(req, res)=>{
 
-    let usuarios = await usuarioModel.findID('1');
+    let usuarios = await usuarioModel.findID('2');
 
     console.log(usuarios);
-    usuarios = await usuarioModel.findByField({"user_usuario":"helvinha"});
-
-    console.log(usuarios);
+    usuarios = await usuarioModel.findByField({"email_usuario":"helvinhas"});
+    
+    console.log(usuarios.length);
+    
+    usuarios = await usuarioModel.findAll();
+    console.log(usuarios.length);
 
 } );
 
@@ -49,7 +53,14 @@ router.get("/login", (req, res) => {
 })
 
 router.get("/cadastro", (req, res) => {
-    res.render("pages/cadastro");
+    res.render("pages/cadastro", {listaErros: null, campos:{"nome":"", "email":""}});
+})
+
+router.post("/cadastro", 
+
+    usuarioController.regraValidacaoAutoCadUsuario,
+    (req, res) => {
+        usuarioController.autoAddUsuario(req, res);
 })
 
 router.get("/perfil", (req, res) => {
