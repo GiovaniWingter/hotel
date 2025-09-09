@@ -7,33 +7,33 @@ const usuarioController = {
     regraValidacaoAutoCadUsuario: [
         body("nome").isLength({ min: 8, max: 45 })
             .withMessage("O nome deve ter de 8 a 45 letras!"),
-        body("nome").custom( async(value)=>{
-            let usuario = await usuarioModel.findByField({"user_usuario":value});
-            if(usuario.length == 0){
+        body("nome").custom(async (value) => {
+            let usuario = await usuarioModel.findByField({ "user_usuario": value });
+            if (usuario.length == 0) {
                 return true;
-            }else{
+            } else {
                 throw new Error("Nome de Usuário já cadastrado!")
             }
         }),
         body("email").isEmail()
             .withMessage("O e-mail deve ser válido!"),
-        body("email").custom( async(value)=>{
-            let usuario = await usuarioModel.findByField({"email_usuario":value});
-            if(usuario.length == 0){
+        body("email").custom(async (value) => {
+            let usuario = await usuarioModel.findByField({ "email_usuario": value });
+            if (usuario.length == 0) {
                 return true;
-            }else{
+            } else {
                 throw new Error("E-mail já cadastrado!")
             }
         }),
         body("senha").isStrongPassword()
-        .withMessage("Senha deve ter no mínimo 8 caracteres. Ao menos 1 maiúsculo, 1 minísculo, 1 caractere especial e 1 número!"),    
-        body("senha").custom((value, {req})=>{
-            if(value == req.body.csenha){
+            .withMessage("Senha deve ter no mínimo 8 caracteres. Ao menos 1 maiúsculo, 1 minísculo, 1 caractere especial e 1 número!"),
+        body("senha").custom((value, { req }) => {
+            if (value == req.body.csenha) {
                 return true;
-            }else{
-                throw new Error("As senhas devem ser iguais!");                
+            } else {
+                throw new Error("As senhas devem ser iguais!");
             }
-        })   
+        })
     ],
 
     regraValidacaoCadUsuario: [
@@ -120,14 +120,24 @@ const usuarioController = {
                 console.log("erro insert");
             } else {
                 //sucesso no insert
-                res.redirect("/");
+                res.locals.dadosNotificacao = {
+                    titulo: "Falha ao logar!",
+                    mensagem: "Usuário e/ou senha inválidos!",
+                    tipo: "error",
+                }
+                // res.redirect("/");
+                res.render('pages/index', {dadosNotificacao :{
+                    titulo: "Concluiído!",
+                    mensagem: "Usuário cadastrado com sucesso!",
+                    tipo: "success",
+                }});
             }
 
         } else {
             // tem conteúdo -> erro nos dados enviados
             console.log(listaErros);
             //enviar msg feedback erros
-            res.render("pages/cadastro", {listaErros: listaErros, campos:{"nome":req.body.nome, "email":req.body.email}});
+            res.render("pages/cadastro", { listaErros: listaErros, campos: { "nome": req.body.nome, "email": req.body.email } });
         }
     },
 
