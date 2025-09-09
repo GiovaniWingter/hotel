@@ -127,12 +127,11 @@ const usuarioController = {
                 }
                 // res.redirect("/");
                 res.render('pages/index', {dadosNotificacao :{
-                    titulo: "Concluiído!",
+                    titulo: "Concluído!",
                     mensagem: "Usuário cadastrado com sucesso!",
                     tipo: "success",
                 }});
             }
-
         } else {
             // tem conteúdo -> erro nos dados enviados
             console.log(listaErros);
@@ -146,7 +145,6 @@ const usuarioController = {
 
         res.render("pages/adm-cliente", { lista: listaClientes });
     }
-
 
 }
 
