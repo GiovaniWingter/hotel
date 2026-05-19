@@ -45,7 +45,7 @@ router.get("/insert", async(req, res)=>{
 });
 
 router.get("/", (req, res) => {
-    res.render('pages/index');
+    res.render('pages/index', {dadosNotificacao :null});
 })
 
 router.get("/login", (req, res) => {

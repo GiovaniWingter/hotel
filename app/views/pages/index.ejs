@@ -8,9 +8,19 @@
     <title>Hotel IceTown</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 </head>
 
 <body>
+<%
+if (dadosNotificacao) { %>
+    <script>
+        notify("<%= dadosNotificacao.titulo%>","<%= dadosNotificacao.mensagem%>", "<%= dadosNotificacao.tipo%>", "y-center left");                   
+    </script>
+<% } %>
+
 
     <div id=container>
 
