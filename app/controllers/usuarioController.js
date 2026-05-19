@@ -4,6 +4,38 @@ const { body, validationResult } = require("express-validator");
 
 const usuarioController = {
 
+    regraValidacaoAutoCadUsuario: [
+        body("nome").isLength({ min: 8, max: 45 })
+            .withMessage("O nome deve ter de 8 a 45 letras!"),
+        body("nome").custom(async (value) => {
+            let usuario = await usuarioModel.findByField({ "user_usuario": value });
+            if (usuario.length == 0) {
+                return true;
+            } else {
+                throw new Error("Nome de Usuário já cadastrado!")
+            }
+        }),
+        body("email").isEmail()
+            .withMessage("O e-mail deve ser válido!"),
+        body("email").custom(async (value) => {
+            let usuario = await usuarioModel.findByField({ "email_usuario": value });
+            if (usuario.length == 0) {
+                return true;
+            } else {
+                throw new Error("E-mail já cadastrado!")
+            }
+        }),
+        body("senha").isStrongPassword()
+            .withMessage("Senha deve ter no mínimo 8 caracteres. Ao menos 1 maiúsculo, 1 minísculo, 1 caractere especial e 1 número!"),
+        body("senha").custom((value, { req }) => {
+            if (value == req.body.csenha) {
+                return true;
+            } else {
+                throw new Error("As senhas devem ser iguais!");
+            }
+        })
+    ],
+
     regraValidacaoCadUsuario: [
         body("nome").isLength({ min: 5, max: 45 })
             .withMessage("O nome deve ter de 5 a 45 letras!"),
@@ -13,6 +45,7 @@ const usuarioController = {
             .withMessage("Somente números"),
         body("nomeUsuario").isLength({ min: 8, max: 20 })
             .withMessage("O nome deve ter de 8 a 20 letras!"),
+
         body("email").isEmail()
             .withMessage("O e-mail deve ser válido!"),
         body("senha").isStrongPassword()
@@ -66,12 +99,53 @@ const usuarioController = {
         }
     },
 
+    autoAddUsuario: async (req, res) => {
+        const listaErros = validationResult(req);
+
+        if (listaErros.isEmpty()) {
+            //vazio -> validação concluida com sucesso
+            console.log("Sem erros de formulário");
+
+            let usuario = {
+                "nome_usuario": req.body.nome,
+                "user_usuario": req.body.nome,
+                "email_usuario": req.body.email,
+                "senha_usuario": req.body.senha
+            };
+
+            const resultado = await usuarioModel.create(usuario);
+            //insert no banco
+
+            if (resultado == null) {
+                //erro no insert
+                console.log("erro insert");
+            } else {
+                //sucesso no insert
+                res.locals.dadosNotificacao = {
+                    titulo: "Falha ao logar!",
+                    mensagem: "Usuário e/ou senha inválidos!",
+                    tipo: "error",
+                }
+                // res.redirect("/");
+                res.render('pages/index', {dadosNotificacao :{
+                    titulo: "Concluído!",
+                    mensagem: "Usuário cadastrado com sucesso!",
+                    tipo: "success",
+                }});
+            }
+        } else {
+            // tem conteúdo -> erro nos dados enviados
+            console.log(listaErros);
+            //enviar msg feedback erros
+            res.render("pages/cadastro", { listaErros: listaErros, campos: { "nome": req.body.nome, "email": req.body.email } });
+        }
+    },
+
     listarUsuario: async (req, res) => {
         const listaClientes = await usuarioModel.findAll();
 
         res.render("pages/adm-cliente", { lista: listaClientes });
     }
-
 
 }
 

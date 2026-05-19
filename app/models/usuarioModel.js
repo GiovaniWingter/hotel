@@ -12,6 +12,29 @@ const usuarioModel = {
             return null;       
         }
     },
+
+    findID: async(id)=>{
+        try{
+            const [resultado, estrutura] = await 
+            pool.query("select * from usuario where status_usuario = 1 and id_usuario = ?", [id] );
+            return resultado;
+        }catch(erro){
+            console.log(erro);     
+            return null;       
+        }
+    },
+    
+    findByField: async(campo)=>{
+        try{
+            const [resultado, estrutura] = await 
+            pool.query("select * from usuario where status_usuario = 1 and ?", [campo] );
+            return resultado;
+        }catch(erro){
+            console.log(erro);     
+            return null;       
+        }
+    },
+    
     create: async(valoresCampos)=>{
         try{
             const [resultado] = await 
