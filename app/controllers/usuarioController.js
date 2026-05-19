@@ -43,8 +43,9 @@ const usuarioController = {
             .withMessage("CEP possui 8 números"),
         body("cep").isNumeric()
             .withMessage("Somente números"),
-        body("nomeUsuario").isLength({ min: 8, max: 45 })
-            .withMessage("O nome deve ter de 8 a 45 letras!"),
+        body("nomeUsuario").isLength({ min: 8, max: 20 })
+            .withMessage("O nome deve ter de 8 a 20 letras!"),
+
         body("email").isEmail()
             .withMessage("O e-mail deve ser válido!"),
         body("senha").isStrongPassword()
